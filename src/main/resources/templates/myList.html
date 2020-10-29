@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/head :: head"></th:block>
+    <title> My Gift List </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script>
+        function sure(id) {
+            var absolutelySure = document.getElementById(id);
+            if (window.confirm('You cannot undo a delete. Do you want to proceed?'))
+            {
+                absolutelySure.click();
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div th:insert = "fragments/navbar :: navbar"  > </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col mainPageDiv">
+            <h1>Add Gift</h1>
+            <form th:action="@{/myList}" th:object="${gift}" method="post">
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Item Name</label>
+                    <input th:field="*{giftName}" type="text" class="form-control" id="exampleFormControlInput1" >
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Description </label>
+                    <input class="form-control" id="exampleFormControlTextarea1" rows="3" th:field="*{giftDescription}" >
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput12">URL</label>
+                    <input th:field="*{giftUrl}" type="text" class="form-control" id="exampleFormControlInput12" placeholder="www.website.com">
+                </div>
+
+                <p>
+                    <input class="btn btn-secondary" type="submit" value="Submit"/> <input class="btn btn-secondary" type="reset" value="Reset">
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col" id="myGiftsDiv">
+            <h1>My Gift list</h1>
+            <div class="card container-fluid"  th:each="gift: ${gifts}">
+                <div class="card-body row" id="mylistcard">
+                    <div class="col-8 text-left">
+                        <h4 class="card-title" th:text="${gift.giftName}"></h4>
+                        <p class="card-text" th:text="${gift.giftDescription}"></p>
+                        <a class="card-subtitle mb-2 text-muted" th:href="${gift.giftUrl}"  th:target="_blank" th:text="${gift.giftUrl}"></a>
+
+
+                    </div>
+                    <div class="col-4 text-center">
+                        <a id="delete" th:onclick="|sure(${gift.id})|" class="btn btn-secondary">X</a>
+                        <a class="btn btn-secondary" th:href="@{|/editGift/${gift.id}|}">Edit</a>
+                        <a th:href="@{|/delGift/${gift.id}|}" th:id="${gift.id}"> </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

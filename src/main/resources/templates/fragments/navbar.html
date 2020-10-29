@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+
+</head>
+
+<body>
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <img id="logo" src="/image/gift-box3.png">
+        <a class="navbar-brand" href="/" > Gift Lists </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/">Home </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="myList">My List</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        All Lists
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/Becca">Becca</a>
+                        <a class="dropdown-item" href="/Ryan">Ryan</a>
+                        <a class="dropdown-item" href="/Deb">Deb</a>
+                        <a class="dropdown-item" href="/Mike">Mike</a>
+                        <a class="dropdown-item" href="/Jesse">Jesse</a>
+                        <a class="dropdown-item" href="/Heather">Heather</a>
+                    </div>
+                </li>
+                <li class="nav-item" sec:authorize="isFullyAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <input class="nav-link btn btn-light" type="submit" value="Sign Out"/>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+        </div>
+
+</body>
+</html>
