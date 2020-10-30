@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.List;
+
 /**
  * In Terminal run 'ifconfig'.
  *
@@ -58,9 +60,9 @@ public class GiftController {
 
     @GetMapping("/{personName}")
     public String myGifts(@PathVariable() String personName, Model model) {
-        Person person = giftService.getPersonByName(personName);
-        model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
+        Person person = giftService.getPersonByName(personName);model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
         model.addAttribute("person", personName);
+        model.addAttribute("persons", giftService.getAllPersons());
         return "othersList";
     }
 
