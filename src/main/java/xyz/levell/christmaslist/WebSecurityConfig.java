@@ -19,13 +19,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/css/**", "/js/**", "/h2-console/**", "/image/**", "/font/**").permitAll()
                 .anyRequest().authenticated()
+
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
+
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+
+                .and()
+                .rememberMe().key("uniqueAndSecret")
+        ;
+
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
