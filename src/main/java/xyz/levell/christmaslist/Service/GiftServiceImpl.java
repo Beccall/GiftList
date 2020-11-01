@@ -1,43 +1,36 @@
-package xyz.levell.christmaslist;
+package xyz.levell.christmaslist.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import xyz.levell.christmaslist.Entity.Gift;
+import xyz.levell.christmaslist.Repository.*;
+import xyz.levell.christmaslist.Entity.Person;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GiftServiceImpl implements GiftService {
     private PersonRepository personRepository;
     private GiftRepository giftRepository;
+    private GiftPersonRepository giftPersonRepository;
+    private FamilyRepository familyRepository;
+    private FamilyPersonRepository familyPersonRepository;
 
     @Autowired
-    public GiftServiceImpl(PersonRepository personRepository, GiftRepository giftRepository) {
+    public GiftServiceImpl(PersonRepository personRepository, GiftRepository giftRepository, GiftPersonRepository giftPersonRepository, FamilyRepository familyRepository, FamilyPersonRepository familyPersonRepository) {
         this.personRepository = personRepository;
         this.giftRepository = giftRepository;
+        this.familyPersonRepository = familyPersonRepository;
+        this.familyRepository = familyRepository;
+        this.giftPersonRepository = giftPersonRepository;
 
     }
     public Gift findGiftById(long id) {
         return giftRepository.findById(id);
     }
 
-    public Person addPerson(String name) {
-        Person person = new Person(name);
-        return personRepository.save(person);
-    }
-
-    public List<Person> getAllPersons() {
-        return personRepository.findAll();
-    }
-    public Person getPerson() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Person person = personRepository.findByName(authentication.getName());
-        return person;
-    }
 
     public Gift addGift(String giftName, String giftUrl, String giftDescription) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,19 +48,10 @@ public class GiftServiceImpl implements GiftService {
         giftRepository.deleteById(id);
     }
 
-    public Person findLoggedIn() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return personRepository.findByName(authentication.getName());
-    }
-
     public List<Gift> getAllGiftsByPerson(Person person) {
         return giftRepository.findAllByPerson(person);
     }
 
-    public Person getPersonByName(String name) {
-        Person person = personRepository.findByName(name);
-        return person;
-    }
 
     public void updateGift(long giftId, Gift gift) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -76,7 +60,6 @@ public class GiftServiceImpl implements GiftService {
         newGift.setId(giftId);
         giftRepository.save(newGift);
     }
-
 
 
 }

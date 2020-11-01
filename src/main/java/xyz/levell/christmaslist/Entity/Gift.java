@@ -1,4 +1,4 @@
-package xyz.levell.christmaslist;
+package xyz.levell.christmaslist.Entity;
 
 import javax.persistence.*;
 
@@ -15,7 +15,7 @@ public class Gift {
     private Person person;
 
 
-    protected Gift() {}
+    public Gift() {}
 
     public Gift(String giftName, String giftUrl, String giftDescription, Person person) {
         this.giftName = giftName;

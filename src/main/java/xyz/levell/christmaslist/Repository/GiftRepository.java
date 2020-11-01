@@ -1,8 +1,8 @@
-package xyz.levell.christmaslist;
+package xyz.levell.christmaslist.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import xyz.levell.christmaslist.Entity.Gift;
+import xyz.levell.christmaslist.Entity.Person;
 
 import java.util.List;
 

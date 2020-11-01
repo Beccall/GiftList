@@ -1,12 +1,15 @@
-package xyz.levell.christmaslist;
+package xyz.levell.christmaslist.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import xyz.levell.christmaslist.Entity.Gift;
+import xyz.levell.christmaslist.Entity.Person;
+import xyz.levell.christmaslist.Service.GiftService;
+import xyz.levell.christmaslist.Service.PersonService;
 
-import java.util.List;
 
 /**
  * In Terminal run 'ifconfig'.
@@ -19,10 +22,12 @@ import java.util.List;
 public class GiftController {
 
     private GiftService giftService;
+    private PersonService personService;
 
     @Autowired
-    public GiftController(GiftService giftService) {
+    public GiftController(GiftService giftService, PersonService personService) {
         this.giftService = giftService;
+        this.personService = personService;
     }
 
     @GetMapping("/login")
@@ -37,7 +42,7 @@ public class GiftController {
 
     @GetMapping("/myList")
     public String addGift(Model model){
-        Person person = giftService.findLoggedIn();
+        Person person = personService.findLoggedIn();
         model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
         Gift gift = new Gift();
         gift.setPerson(new Person());
@@ -60,9 +65,9 @@ public class GiftController {
 
     @GetMapping("/{personName}")
     public String myGifts(@PathVariable() String personName, Model model) {
-        Person person = giftService.getPersonByName(personName);model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
+        Person person = personService.getPersonByName(personName);model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
         model.addAttribute("person", personName);
-        model.addAttribute("persons", giftService.getAllPersons());
+        model.addAttribute("persons", personService.getAllPersons());
         return "othersList";
     }
 
@@ -76,7 +81,6 @@ public class GiftController {
     public RedirectView editGift(Gift gift, @PathVariable long giftId) {
         giftService.updateGift(giftId, gift);
         return new RedirectView("/myList");
-
     }
 
 }

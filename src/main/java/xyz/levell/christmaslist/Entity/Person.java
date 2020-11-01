@@ -1,5 +1,7 @@
-package xyz.levell.christmaslist;
+package xyz.levell.christmaslist.Entity;
 
+
+import xyz.levell.christmaslist.Entity.Gift;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,7 +18,7 @@ public class Person {
     @OneToMany(mappedBy = "person")
     private List<Gift> gifts;
 
-    protected Person() {}
+    public Person() {}
 
     public Person(String name) {
         this.name = name;
@@ -27,9 +29,6 @@ public class Person {
         return String.format(
                 "Person[id=%d, name='%s', gifts='%s']",
                 id, name, gifts);
-    }
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Long getId() { return id; }

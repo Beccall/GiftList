@@ -79,8 +79,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .password("password")
                         .roles("USER")
                         .build();
+        UserDetails brianLogin =
+                User.withDefaultPasswordEncoder()
+                        .username("Brian")
+                        .password("password")
+                        .roles("USER")
+                        .build();
+        UserDetails michaelLogin =
+                User.withDefaultPasswordEncoder()
+                        .username("Michael")
+                        .password("password")
+                        .roles("USER")
+                        .build();
+        UserDetails andyLogin =
+                User.withDefaultPasswordEncoder()
+                        .username("Andy")
+                        .password("password")
+                        .roles("USER")
+                        .build();
+        UserDetails jeremyLogin =
+                User.withDefaultPasswordEncoder()
+                        .username("Jeremy")
+                        .password("password")
+                        .roles("USER")
+                        .build();
+        UserDetails jamesLogin =
+                User.withDefaultPasswordEncoder()
+                        .username("James")
+                        .password("password")
+                        .roles("USER")
+                        .build();
 
 
-        return new InMemoryUserDetailsManager(ryanLogin, beccaLogin, jesseLogin, mikeLogin, debLogin, heatherLogin);
+
+        return new InMemoryUserDetailsManager(ryanLogin, beccaLogin, jesseLogin, mikeLogin, debLogin, heatherLogin, brianLogin, michaelLogin, andyLogin, jeremyLogin, jamesLogin);
     }
 }
