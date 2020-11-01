@@ -12,12 +12,12 @@
 <div class="container">
     <div class="row">
         <div class="col text-center mainPageDiv">
-            <div sec:authorize="!isFullyAuthenticated()">
+            <div sec:authorize="!isAuthenticated()">
                 <h1 th:inline="text">Welcome! </h1>
                 <a class="btn btn-light" th:href="@{/login}" role="button">Log in</a>
             </div>
 
-            <h1 sec:authorize="isFullyAuthenticated()" th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]!</h1>
+            <h1 sec:authorize="isAuthenticated()" th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]!</h1>
 
         </div>
     </div>
