@@ -34,8 +34,8 @@
     <div class="row">
         <div class="col mainPageDiv">
 
-            <h1 th:if="${adminOwners.size() < 2}">Add Gift</h1>
-            <h1 th:if="${adminOwners.size() >= 2}" th:text="|Add to ${personName}'s List|"></h1>
+            <h1 th:if="${personName} == ${personLoggedIn.name}">Add Gift</h1>
+            <h1 th:if="${personName} != ${personLoggedIn.name}" th:text="|Add to ${personName}'s List|"></h1>
             <form th:action="@{|/myList/${personName}|}" th:object="${gift}" method="post">
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Item Name</label>
@@ -61,8 +61,8 @@
 <div class="container">
     <div class="row">
         <div class="col" id="myGiftsDiv">
-            <h1 th:if="${adminOwners.size() < 2}">My Gift list</h1>
-            <h1 th:if="${adminOwners.size() >= 2}" th:text="|${personName}'s Gift List|"></h1>
+            <h1 th:if="${personName} == ${personLoggedIn.name}">My Gift list</h1>
+            <h1 th:if="${personName} != ${personLoggedIn.name}" th:text="|${personName}'s Gift List|"></h1>
             <div class="card container-fluid"  th:each="gift: ${gifts}">
                 <div class="card-body row" id="mylistcard">
                     <div class="col-8 text-left">
