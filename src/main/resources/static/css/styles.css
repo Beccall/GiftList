@@ -12,8 +12,14 @@
 
 body {
     background-color: #c5d5cb;
+    padding-top: 7%;
 }
+@media screen and (max-width: 800px) {
+    body {
+        padding-top: 20%;
+    }
 
+}
 
 #logo {
     width: 50px;
@@ -68,6 +74,9 @@ body {
 
 #ListNamesDiv {
     margin-bottom: -20px;
+    margin-top: 20px;
+}
+.Namesbutton {
     margin-top: 20px;
 }
 @media screen and (max-width: 600px) {

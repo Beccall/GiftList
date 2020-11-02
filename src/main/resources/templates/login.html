@@ -6,7 +6,7 @@
     <title>Login</title>
 </head>
 <body>
-<div th:replace = "fragments/navbar :: navbar" > </div>
+<div th:insert = "fragments/navbar :: navbar(${ownersInFamily}, ${adminOwners}, ${personLoggedIn})" > </div>
 <div class="container">
     <div class="row">
         <div class="col mainPageDiv" id="loginDiv">

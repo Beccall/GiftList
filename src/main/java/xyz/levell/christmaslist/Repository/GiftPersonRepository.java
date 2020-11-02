@@ -12,6 +12,7 @@ import java.util.List;
 public interface GiftPersonRepository extends JpaRepository<GiftPerson, Long> {
     GiftPerson findById(long id);
     List<GiftPerson> findByFamily(Family family);
+    List<GiftPerson> findByFamilyIn(List<Family> family);
     List<GiftPerson> findByPersonAdmin(Person person);
 
 }

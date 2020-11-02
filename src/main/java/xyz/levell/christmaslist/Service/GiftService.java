@@ -8,9 +8,9 @@ import java.util.List;
 
 @Service
 public interface GiftService {
-    public Gift addGift(String giftName, String giftUrl, String giftDescription);
+    public Gift addGift(String giftName, String giftUrl, String giftDescription, Person person);
     public void delGift(Long id);
     public List<Gift> getAllGiftsByPerson(Person loggedIn);
     public Gift findGiftById(long id);
-    public void updateGift(long giftId, Gift gift);
+    public void updateGift(long giftId, Gift gift, Person person);
     }

@@ -23,7 +23,7 @@ MERGE INTO person (id, name) VALUES
     (20, 'James'),
     (21, 'Andy'),
     (22, 'Lorena'),
-    (23, 'Baby Jones'),
+    (23, 'Baby-Jones'),
     (24, 'Brett'),
     (25, 'Hannah'),
     (26, 'Scott'),
@@ -99,4 +99,9 @@ MERGE into gift_person (id, person_owner_id, person_admin_id, family_id) VALUES
      (20, 19, 17, 2),
      (21, 23, 22, 2),
      (22, 23, 21, 2),
-     (23, 31, 30, 2);
+     (23, 31, 30, 2),
+    (24, 13, 13, 2),
+    (25, 14, 14, 2),
+    (26, 15, 15, 2),
+    (27, 18, 18, 2);
+

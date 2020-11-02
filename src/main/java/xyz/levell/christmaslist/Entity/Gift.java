@@ -25,12 +25,6 @@ public class Gift {
 
     }
 
-//    public Gift(long id, String giftName, String giftUrl, String giftDescription, Person person) {
-//        this(giftName, giftUrl, giftDescription, person);
-//        this.id = id;
-//    }
-
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -40,6 +34,18 @@ public class Gift {
         return String.format(
                 "Person[id=%d, giftName='%s', giftUrl='%s', giftDescription='%s', person='%d']",
                 id, giftName, giftUrl, giftDescription, person.getId());
+    }
+
+    public void setGiftName(String giftName) {
+        this.giftName = giftName;
+    }
+
+    public void setGiftUrl(String giftUrl) {
+        this.giftUrl = giftUrl;
+    }
+
+    public void setGiftDescription(String giftDescription) {
+        this.giftDescription = giftDescription;
     }
 
     public void setPerson(Person person) { this.person = person;}

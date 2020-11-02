@@ -16,13 +16,27 @@
     </script>
 </head>
 <body>
-<div th:insert = "fragments/navbar :: navbar"  > </div>
+<div th:insert = "fragments/navbar :: navbar(${ownersInFamily}, ${adminOwners}, ${personLoggedIn})" > </div>
+<div th:if="${adminOwners.size() >= 2}" class="container-fluid">
+    <div class="row">
+        <div class="col" id="ListNamesDiv">
+            <h5>My Gift Lists:</h5>
+            <span th:each="owner: ${adminOwners}" >
+                <a th:unless="${owner.name} == ${personName}" class="btn btn-light Namesbutton" th:href="${owner.name}" th:text="${owner.name}"></a>
+                <a th:if="${owner.name} == ${personName}" class="btn btn-light active Namesbutton" th:href="${owner.name}" th:text="${owner.name}"></a>
+            </span>
+            <hr>
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <div class="row">
         <div class="col mainPageDiv">
-            <h1>Add Gift</h1>
-            <form th:action="@{/myList}" th:object="${gift}" method="post">
+
+            <h1 th:if="${adminOwners.size() < 2}">Add Gift</h1>
+            <h1 th:if="${adminOwners.size() >= 2}" th:text="|Add to ${personName}'s List|"></h1>
+            <form th:action="@{|/myList/${personName}|}" th:object="${gift}" method="post">
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Item Name</label>
                     <input th:field="*{giftName}" type="text" class="form-control" id="exampleFormControlInput1" >
@@ -47,7 +61,8 @@
 <div class="container">
     <div class="row">
         <div class="col" id="myGiftsDiv">
-            <h1>My Gift list</h1>
+            <h1 th:if="${adminOwners.size() < 2}">My Gift list</h1>
+            <h1 th:if="${adminOwners.size() >= 2}" th:text="|${personName}'s Gift List|"></h1>
             <div class="card container-fluid"  th:each="gift: ${gifts}">
                 <div class="card-body row" id="mylistcard">
                     <div class="col-8 text-left">
@@ -59,8 +74,8 @@
                     </div>
                     <div class="col-4 text-center">
                         <a id="delete" th:onclick="|sure(${gift.id})|" class="btn btn-secondary">X</a>
-                        <a class="btn btn-secondary" th:href="@{|/editGift/${gift.id}|}">Edit</a>
-                        <a th:href="@{|/delGift/${gift.id}|}" th:id="${gift.id}"> </a>
+                        <a class="btn btn-secondary" th:href="@{|/editGift/${gift.id}/${personName}|}">Edit</a>
+                        <a th:href="@{|/delGift/${gift.id}/${personName}|}" th:id="${gift.id}"> </a>
 
                     </div>
                 </div>

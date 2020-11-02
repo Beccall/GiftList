@@ -1,14 +1,20 @@
 package xyz.levell.christmaslist.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import xyz.levell.christmaslist.Entity.Family;
 import xyz.levell.christmaslist.Entity.Gift;
+import xyz.levell.christmaslist.Entity.GiftPerson;
 import xyz.levell.christmaslist.Entity.Person;
 import xyz.levell.christmaslist.Service.GiftService;
 import xyz.levell.christmaslist.Service.PersonService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -31,56 +37,89 @@ public class GiftController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        List<Person> ownersInFamily = personService.getOwnersByFamily();
+        model.addAttribute("ownersInFamily", ownersInFamily);
+
         return "login";
     }
 
     @GetMapping("/")
-    public String hello() {
+    public String hello(Model model) {
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
         return "index";
     }
 
-    @GetMapping("/myList")
-    public String addGift(Model model){
-        Person person = personService.findLoggedIn();
+    @GetMapping("/myList/{personName}")
+    public String addGift(@PathVariable String personName, Model model){
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+
+
+        Person person = personService.getPersonByName(personName);
         model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
         Gift gift = new Gift();
         gift.setPerson(new Person());
         model.addAttribute("gift", gift);
         return "myList";
+
     }
 
-    @PostMapping("/myList")
-    public RedirectView processFormGift(Gift gift, Model model) {
-        giftService.addGift(gift.getGiftName(), gift.getGiftUrl(), gift.getGiftDescription());
-        return new RedirectView("/myList");
+    @PostMapping("/myList/{personName}")
+    public RedirectView processFormGift(@PathVariable String personName, Gift gift, Model model) {
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+        model.addAttribute("personName", personName);
+        Person person = personService.getPersonByName(personName);
+        giftService.addGift(gift.getGiftName(), gift.getGiftUrl(), gift.getGiftDescription(), person);
+        return new RedirectView("/myList/{personName}");
     }
 
-    @GetMapping("/delGift/{giftId}")
-    public RedirectView delGift(@PathVariable Long giftId) {
+    @GetMapping("/delGift/{giftId}/{personName}")
+    public RedirectView delGift(@PathVariable Long giftId, Model model) {
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
         giftService.delGift(giftId);
-        return new RedirectView("/myList");
+        return new RedirectView("/myList/{personName}");
 
     }
 
     @GetMapping("/{personName}")
     public String myGifts(@PathVariable() String personName, Model model) {
-        Person person = personService.getPersonByName(personName);model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+        Person person = personService.getPersonByName(personName);
+        model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
         model.addAttribute("person", personName);
-        model.addAttribute("persons", personService.getAllPersons());
+//        model.addAttribute("persons", personService.getAllPersons());
         return "othersList";
     }
 
-    @GetMapping("/editGift/{giftId}")
-    public String editGift(@PathVariable long giftId, Model model) {
+    @GetMapping("/editGift/{giftId}/{personName}")
+    public String editGift(@PathVariable long giftId, @PathVariable String personName,  Model model) {
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
         model.addAttribute("giftToEdit", giftService.findGiftById(giftId));
+        model.addAttribute("personName", personName);
         return "editGift";
     }
 
-    @PostMapping("/editGift/{giftId}")
-    public RedirectView editGift(Gift gift, @PathVariable long giftId) {
-        giftService.updateGift(giftId, gift);
-        return new RedirectView("/myList");
+    @PostMapping("/editGift/{giftId}/{personName}")
+    public RedirectView editGift(@PathVariable String personName, @PathVariable long giftId, Gift gift, Model model) {
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+        Person person = personService.getPersonByName(personName);
+        model.addAttribute("personName", personName);
+        giftService.updateGift(giftId, gift, person);
+        return new RedirectView("/myList/{personName}" );
     }
 
 }

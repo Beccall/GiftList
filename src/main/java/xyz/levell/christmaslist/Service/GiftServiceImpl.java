@@ -32,9 +32,9 @@ public class GiftServiceImpl implements GiftService {
     }
 
 
-    public Gift addGift(String giftName, String giftUrl, String giftDescription) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Person person = personRepository.findByName(authentication.getName());
+    public Gift addGift(String giftName, String giftUrl, String giftDescription, Person person) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Person person = personRepository.findByName(authentication.getName());
         if (!giftUrl.isEmpty()) {
             if (!giftUrl.contains("http")) {
                 giftUrl = "https://" + giftUrl;
@@ -53,9 +53,9 @@ public class GiftServiceImpl implements GiftService {
     }
 
 
-    public void updateGift(long giftId, Gift gift) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Person person = personRepository.findByName(authentication.getName());
+    public void updateGift(long giftId, Gift gift, Person person) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Person person = personRepository.findByName(authentication.getName());
         Gift newGift = new Gift(gift.getGiftName(), gift.getGiftUrl(), gift.getGiftDescription(), person);
         newGift.setId(giftId);
         giftRepository.save(newGift);

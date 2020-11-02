@@ -7,17 +7,17 @@
 </head>
 <body>
 
-<div th:insert = "fragments/navbar :: navbar" > </div>
+<div th:insert = "fragments/navbar :: navbar(${ownersInFamily}, ${adminOwners}, ${personLoggedIn})" > </div>
 
 
 <div class="container">
     <div class="row">
         <div class="col mainPageDiv ">
             <h1>Edit Gift</h1>
-            <form th:action="@{|/editGift/${giftToEdit.id}|}" method="post" autocomplete="off">
+            <form th:action="@{|/editGift/${giftToEdit.id}/${personName}|}" method="post" autocomplete="off">
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Item Name</label>
-                    <input th:field="${giftToEdit.giftName}" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Item Name">
+                    <input th:field="${giftToEdit.giftName}" type="text" class="form-control" id="exampleFormControlInput1" >
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Description </label>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlInput12">URL</label>
-                    <input th:field="${giftToEdit.giftUrl}" type="text" class="form-control" id="exampleFormControlInput12" placeholder="www.enterURL.com">
+                    <input th:field="${giftToEdit.giftUrl}" type="text" class="form-control" id="exampleFormControlInput12" placeholder="www.website.com">
                 </div>
 
                 <p>

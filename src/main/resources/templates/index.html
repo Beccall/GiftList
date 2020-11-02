@@ -7,10 +7,11 @@
     <title>Gift Lists!</title>
 </head>
 <body id="MainBody">
-<div th:insert = "fragments/navbar :: navbar" > </div>
+<div th:insert = "fragments/navbar :: navbar(${ownersInFamily}, ${adminOwners}, ${personLoggedIn})" > </div>
 
 <div class="container">
     <div class="row">
+
         <div class="col text-center mainPageDiv">
             <div sec:authorize="!isAuthenticated()">
                 <h1 th:inline="text">Welcome! </h1>

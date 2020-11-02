@@ -10,13 +10,13 @@
 </head>
 <body>
 
-<div th:insert = "fragments/navbar :: navbar" > </div>
+<div th:insert = "fragments/navbar :: navbar(${ownersInFamily}, ${adminOwners}, ${personLoggedIn})" > </div>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col" id="ListNamesDiv">
             <h5>All Gift Lists:</h5>
-            <span th:each="p: ${persons}" >
+            <span th:each="p: ${ownersInFamily}" >
                 <a th:unless="${p.name} == ${person}" class="btn btn-light Namesbutton" th:href="${p.name}" th:text="${p.name}"></a>
                 <a th:if="${p.name} == ${person}" class="btn btn-light active Namesbutton" th:href="${p.name}" th:text="${p.name}"></a>
             </span>
