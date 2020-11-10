@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <th:block th:replace="fragments/head :: head"></th:block>
+    <title>Shopping List</title>
+</head>
+<body id="MainBody">
+<div th:insert="fragments/navbar :: navbar(${ownersInFamily}, ${adminOwners}, ${personLoggedIn})"></div>
+
+<!--<div th:each="claim: ${claimed}">-->
+<!--    <p th:text="${claim.gift.giftName}"></p>-->
+<!--    <p th:text="${claim.gift.giftDescription}"></p>-->
+<!--    <p th:text="${claim.gift.giftUrl}"></p>-->
+<!--    <p th:text="${claim.gift.person.name}"></p>-->
+<!--</div>-->
+<div class="container">
+    <div class="row">
+        <div class="col mainPageDiv">
+            <h1>My Shopping List</h1>
+            <div class="card container-fluid" th:each="claim: ${claimed}">
+                <div class="card-body row">
+                    <div class="col text-left">
+                        <h2 class="card-title" id="shoppingListtitle"th:text="|${claim.gift.giftName}  (${claim.gift.person.name})|"></h2>
+                        <hr>
+                        <p class="card-text" th:text="${claim.gift.giftDescription}"></p>
+                        <a class="card-subtitle mb-2 text-muted" th:href="${claim.gift.giftUrl}" th:target="_blank"
+                           th:text="${claim.gift.giftUrl}"></a>
+                        <div>
+                            <a class="btn btn-secondary" id="shoppingRemove" th:href="|/remove/${claim.id}|">UnClaim
+                                Gift</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

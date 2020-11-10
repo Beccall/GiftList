@@ -1,4 +1,5 @@
 package xyz.levell.christmaslist.Repository;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import xyz.levell.christmaslist.Entity.Claimed;
@@ -8,7 +9,9 @@ import xyz.levell.christmaslist.Entity.Person;
 import java.util.List;
 
 @Repository
-public interface GiftRepository extends JpaRepository<Gift, Long> {
-    Gift findById(long id);
-    List<Gift> findAllByPerson(Person person);
+public interface ClaimedRepository extends JpaRepository<Claimed, Long> {
+    ClaimedRepository findById(long id);
+    List<Claimed> findByPersonClaimer(Person personClaimer);
+    List<Claimed> findByGift(Gift gift);
+    List<Claimed> findByPersonOwner(Person personOwner);
 }

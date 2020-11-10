@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 
 </head>
@@ -9,49 +9,60 @@
 <div th:fragment="navbar(personOwners, adminOwners, personLoggedIn)">
     <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
         <div class="container">
-        <img id="logo" src="/image/gift-box3.png">
-        <a class="navbar-brand" href="/" > Gift Lists </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item ">
-                    <a class="nav-link" href="/">Home </a>
-                </li>
+            <img id="logo" src="/image/gift-box3.png">
+            <a class="navbar-brand" href="/"> Gift Lists </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/">Home </a>
+                    </li>
 
-                <li  sec:authorize="isAuthenticated()" class="nav-item" th:if="${adminOwners.size() == 1}">
-                    <a th:each="adminOwner: ${adminOwners}" th:if="${adminOwner.name} == ${personLoggedIn.name}" class="nav-link" th:href="@{|/myList/${adminOwner.name}|}">My List</a>
-                    <a th:each="adminOwner: ${adminOwners}" th:unless="${adminOwner.name} == ${personLoggedIn.name}" class="nav-link" th:href="@{|/myList/${adminOwner.name}|}" th:text="|${adminOwner.name}'s List|"></a>
-                </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item" th:if="${adminOwners.size() == 1}">
+                        <a th:each="adminOwner: ${adminOwners}" th:if="${adminOwner.name} == ${personLoggedIn.name}"
+                           class="nav-link" th:href="@{|/myList/${adminOwner.name}|}">My List</a>
+                        <a th:each="adminOwner: ${adminOwners}" th:unless="${adminOwner.name} == ${personLoggedIn.name}"
+                           class="nav-link" th:href="@{|/myList/${adminOwner.name}|}"
+                           th:text="|${adminOwner.name}'s List|"></a>
+                    </li>
 
-                <li sec:authorize="isAuthenticated()" class="nav-item dropdown" th:if="${adminOwners.size() > 1}">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        My Lists
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a th:each="adminOwner: ${adminOwners}" class="dropdown-item" th:href="@{|/myList/${adminOwner.name}|}" th:text="${adminOwner.name}"></a>
-                    </div>
-                </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown" th:if="${adminOwners.size() > 1}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            My Lists
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a th:each="adminOwner: ${adminOwners}" class="dropdown-item"
+                               th:href="@{|/myList/${adminOwner.name}|}" th:text="${adminOwner.name}"></a>
+                        </div>
+                    </li>
 
-                <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        All Lists
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a th:each="personOwner: ${personOwners}" class="dropdown-item" th:href="@{|/${personOwner.name}|}" th:text="${personOwner.name}"></a>
-                    </div>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <form th:action="@{/logout}" method="post">
-                        <input class="nav-link btn btn-light" type="submit" value="Sign Out"/>
-                    </form>
-                </li>
-            </ul>
-        </div>
+                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            All Lists
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a th:each="personOwner: ${personOwners}" class="dropdown-item"
+                               th:href="@{|/${personOwner.name}|}" th:text="${personOwner.name}"></a>
+                        </div>
+                    </li>
+                    <li  sec:authorize="isAuthenticated()" class="nav-item" >
+                        <a class="nav-link" href="/shoppingList">Shopping List</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post">
+                            <input class="nav-link btn btn-light" type="submit" value="Sign Out"/>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
-        </div>
+</div>
 
 </body>
 </html>

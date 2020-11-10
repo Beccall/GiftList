@@ -1,6 +1,7 @@
 package xyz.levell.christmaslist.Service;
 
 import org.springframework.stereotype.Service;
+import xyz.levell.christmaslist.Entity.Claimed;
 import xyz.levell.christmaslist.Entity.Gift;
 import xyz.levell.christmaslist.Entity.Person;
 
@@ -13,4 +14,7 @@ public interface GiftService {
     public List<Gift> getAllGiftsByPerson(Person loggedIn);
     public Gift findGiftById(long id);
     public void updateGift(long giftId, Gift gift, Person person);
+    public void addGiftClaimed(Gift gift, Person personClaimer, Person personOwner);
+    public List<Claimed> findClaimedByPersonClaimer(Person personClaimer);
+    public void delClaimed(Long id);
     }

@@ -1,6 +1,7 @@
 package xyz.levell.christmaslist.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Gift {
@@ -14,6 +15,9 @@ public class Gift {
     @ManyToOne
     private Person person;
 
+    @OneToMany(mappedBy = "gift")
+    private List<Claimed> claimed;
+
 
     public Gift() {}
 
@@ -25,15 +29,34 @@ public class Gift {
 
     }
 
+    public void setClaimed(List<Claimed> claimed) {
+        this.claimed = claimed;
+    }
+
+    public boolean isClaimedBy(String userName) {
+        for(Claimed c : claimed) {
+            if(c.getPersonClaimer().getName().equals(userName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
+
     @Override
     public String toString() {
-        return String.format(
-                "Person[id=%d, giftName='%s', giftUrl='%s', giftDescription='%s', person='%d']",
-                id, giftName, giftUrl, giftDescription, person.getId());
+        return "Gift{" +
+                "id=" + id +
+                ", giftName='" + giftName + '\'' +
+                ", giftUrl='" + giftUrl + '\'' +
+                ", giftDescription='" + giftDescription + '\'' +
+                ", person=" + person +
+                ", claimed=" + claimed +
+                '}';
     }
 
     public void setGiftName(String giftName) {
@@ -54,4 +77,5 @@ public class Gift {
     public String getGiftUrl() { return giftUrl; }
     public String getGiftDescription() { return giftDescription; }
     public Person getPerson() { return person; }
+    public List<Claimed> getClaimed() { return claimed; }
 }

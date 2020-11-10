@@ -83,3 +83,28 @@ body {
 .Namesbutton {
     font-size: 12px;
 }}
+
+#claimDiv {
+    margin-top:10px;
+}
+
+#claimGift {
+    margin-left: 10px;
+}
+
+#claimGiftButton {
+    margin-left: -12px;}
+
+.hrLine {
+    height = 100%;
+}
+
+#shoppingRemove {
+    margin-top: 15px;
+}
+
+#shoppingListtitle {
+    font-size: 1.5em;
+    display: block;
+    font-weight: bold;
+}

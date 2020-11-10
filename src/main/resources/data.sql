@@ -86,7 +86,6 @@ MERGE into gift_person (id, person_owner_id, person_admin_id, family_id) VALUES
      (7, 10, 7, 2),
      (8, 10, 8, 2),
      (9, 10, 10, 2),
-     (10, 9, 9, 2),
      (11, 13, 11, 2),
      (12, 13, 12, 2),
      (13, 14, 11, 2),

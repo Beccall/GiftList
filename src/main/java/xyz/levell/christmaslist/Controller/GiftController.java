@@ -6,10 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import xyz.levell.christmaslist.Entity.Family;
-import xyz.levell.christmaslist.Entity.Gift;
-import xyz.levell.christmaslist.Entity.GiftPerson;
-import xyz.levell.christmaslist.Entity.Person;
+import xyz.levell.christmaslist.Entity.*;
 import xyz.levell.christmaslist.Service.GiftService;
 import xyz.levell.christmaslist.Service.PersonService;
 
@@ -57,8 +54,6 @@ public class GiftController {
         model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
         model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
         model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-
-
         Person person = personService.getPersonByName(personName);
         model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
         Gift gift = new Gift();
@@ -90,15 +85,23 @@ public class GiftController {
     }
 
     @GetMapping("/{personName}")
-    public String myGifts(@PathVariable() String personName, Model model) {
+    public String allGifts(@PathVariable() String personName, Model model) {
         model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
         model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
         model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-        Person person = personService.getPersonByName(personName);
-        model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
+        Person personOwner = personService.getPersonByName(personName);
         model.addAttribute("person", personName);
-//        model.addAttribute("persons", personService.getAllPersons());
+        model.addAttribute("gifts", giftService.getAllGiftsByPerson(personOwner));
         return "othersList";
+    }
+
+    @GetMapping("/claimGift/{personName}/{giftId}")
+    public RedirectView claimGift(@PathVariable long giftId, @PathVariable String personName, Model model) {
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+        giftService.addGiftClaimed(giftService.findGiftById(giftId), personService.getPersonByLoggedIn(), personService.getPersonByName(personName));
+        return new RedirectView("/{personName}");
     }
 
     @GetMapping("/editGift/{giftId}/{personName}")
@@ -122,5 +125,24 @@ public class GiftController {
         return new RedirectView("/myList/{personName}" );
     }
 
+    @GetMapping("/shoppingList")
+    public String shoppingList(Model model) {
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+
+        model.addAttribute("claimed", giftService.findClaimedByPersonClaimer(personService.getPersonByLoggedIn()));
+        return "shoppingList";
+    }
+
+    @GetMapping("/remove/{claimId}")
+    public RedirectView removeClaim(@PathVariable long claimId, Model model) {
+        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
+        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
+        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+        giftService.delClaimed(claimId);
+        return new RedirectView("/shoppingList" );
+
+    }
 }
 
