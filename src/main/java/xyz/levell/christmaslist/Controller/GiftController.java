@@ -34,10 +34,7 @@ public class GiftController {
     }
 
     @GetMapping("/login")
-    public String login(Model model) {
-        List<Person> ownersInFamily = personService.getOwnersByFamily();
-        model.addAttribute("ownersInFamily", ownersInFamily);
-
+    public String login() {
         return "login";
     }
 
@@ -54,31 +51,22 @@ public class GiftController {
         model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
         model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
         model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-        Person person = personService.getPersonByName(personName);
-        model.addAttribute("gifts", giftService.getAllGiftsByPerson(person));
+        model.addAttribute("gifts", giftService.getAllGiftsByPerson(personService.getPersonByName(personName)));
         Gift gift = new Gift();
-        gift.setPerson(new Person());
         model.addAttribute("gift", gift);
         return "myList";
 
     }
 
     @PostMapping("/myList/{personName}")
-    public RedirectView processFormGift(@PathVariable String personName, Gift gift, Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-        model.addAttribute("personName", personName);
+    public RedirectView processFormGift(@PathVariable String personName, Gift gift) {
         Person person = personService.getPersonByName(personName);
         giftService.addGift(gift.getGiftName(), gift.getGiftUrl(), gift.getGiftDescription(), person);
         return new RedirectView("/myList/{personName}");
     }
 
     @GetMapping("/delGift/{giftId}/{personName}")
-    public RedirectView delGift(@PathVariable Long giftId, Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+    public RedirectView delGift(@PathVariable Long giftId) {
         giftService.delGift(giftId);
         return new RedirectView("/myList/{personName}");
 
@@ -96,11 +84,9 @@ public class GiftController {
     }
 
     @GetMapping("/claimGift/{personName}/{giftId}")
-    public RedirectView claimGift(@PathVariable long giftId, @PathVariable String personName, Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-        giftService.addGiftClaimed(giftService.findGiftById(giftId), personService.getPersonByLoggedIn(), personService.getPersonByName(personName));
+    public RedirectView claimGift(@PathVariable long giftId, @PathVariable String personName) {
+        giftService.addGiftClaimed(giftService.findGiftById(giftId), personService.getPersonByLoggedIn(),
+                personService.getPersonByName(personName));
         return new RedirectView("/{personName}");
     }
 
@@ -115,13 +101,8 @@ public class GiftController {
     }
 
     @PostMapping("/editGift/{giftId}/{personName}")
-    public RedirectView editGift(@PathVariable String personName, @PathVariable long giftId, Gift gift, Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-        Person person = personService.getPersonByName(personName);
-        model.addAttribute("personName", personName);
-        giftService.updateGift(giftId, gift, person);
+    public RedirectView editGift(@PathVariable String personName, @PathVariable long giftId, Gift gift) {
+        giftService.updateGift(giftId, gift, personService.getPersonByName(personName));
         return new RedirectView("/myList/{personName}" );
     }
 
@@ -136,10 +117,7 @@ public class GiftController {
     }
 
     @GetMapping("/remove/{claimId}")
-    public RedirectView removeClaim(@PathVariable long claimId, Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+    public RedirectView removeClaim(@PathVariable long claimId) {
         giftService.delClaimed(claimId);
         return new RedirectView("/shoppingList" );
 
