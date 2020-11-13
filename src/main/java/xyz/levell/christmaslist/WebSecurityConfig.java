@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> users = Arrays.asList("Ryan", "Becca", "Deb", "Mike", "Heather", "Jesse", "Jeremy",
                 "Mary","Kaylee","Justice", "Brian", "Emily", "Harper", "Landry", "Phinley", "James",
                 "Michael", "Jessica", "Channing", "Pearson", "Andy", "Lorena", "Baby-Jones", "Brett", "Hannah",
-                "Scott", "Robin", "Ron", "Laura", "Kris", "Lyon");
+                "Scott", "Robin", "Ron", "Laura", "Kris", "Lyon", "Bob", "Bill", "Barry");
 
         InMemoryUserDetailsManager service = new InMemoryUserDetailsManager();
 

@@ -31,12 +31,16 @@ MERGE INTO person (id, name) VALUES
     (28, 'Ron'),
     (29, 'Laura'),
     (30, 'Kris'),
-    (31, 'Lyon');
+    (31, 'Lyon'),
+    (32, 'Bob'),
+    (33, 'Bill'),
+    (34, 'Barry');
 
 
 MERGE INTO family (id, family_name) VALUES
     (1, 'Levell'),
-    (2, 'JonesWatkins');
+    (2, 'JonesWatkins'),
+    (3, 'Test');
 
 
 MERGE INTO family_person (id, family_id, person_id ) VALUES
@@ -72,7 +76,11 @@ MERGE INTO family_person (id, family_id, person_id ) VALUES
     (30, 2, 30),
     (31, 2, 31),
     (32, 2, 1),
-    (33, 2, 2);
+    (33, 2, 2),
+    (34, 3, 32),
+    (35, 3, 33),
+    (36, 3, 34);
+
 
 
 
@@ -102,5 +110,7 @@ MERGE into gift_person (id, person_owner_id, person_admin_id, family_id) VALUES
     (24, 13, 13, 2),
     (25, 14, 14, 2),
     (26, 15, 15, 2),
-    (27, 18, 18, 2);
-
+    (27, 18, 18, 2),
+    (28, 32, 32, 3),
+    (29, 33, 33, 3),
+    (30, 34, 34, 3);
