@@ -85,8 +85,11 @@ public class GiftController {
 
     @GetMapping("/claimGift/{personName}/{giftId}")
     public RedirectView claimGift(@PathVariable long giftId, @PathVariable String personName) {
-        giftService.addGiftClaimed(giftService.findGiftById(giftId), personService.getPersonByLoggedIn(),
-                personService.getPersonByName(personName));
+        Gift gift = giftService.findGiftById(giftId);
+         if (gift.isClaimedBy(personService.getPersonByLoggedIn().getName()) == false) {
+            giftService.addGiftClaimed(giftService.findGiftById(giftId), personService.getPersonByLoggedIn(),
+                    personService.getPersonByName(personName));
+         }
         return new RedirectView("/{personName}");
     }
 

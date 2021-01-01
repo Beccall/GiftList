@@ -68,10 +68,10 @@ public class GiftServiceImpl implements GiftService {
     public List<Claimed> findClaimedByPersonClaimer(Person personClaimer) {
         return claimedRepository.findByPersonClaimer(personClaimer);
     }
+
     public void delClaimed(Long id) {
         claimedRepository.deleteById(id);
     }
-
 
 
 

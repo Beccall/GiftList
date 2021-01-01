@@ -1,0 +1,8 @@
+#Bugs
+- ~~When having 2 windows open, you can claim same gift twice.~~
+- If you delete item in your list that has been claimed. Your gift list will throw error - Gift cannont be deleted.
+
+#TODO
+- ~~If item in Shopping List DB, do not re-add~~
+- If you delete item in "my List" it will delete corresponding item from buyer's shopping List - Replace shpping list item with message, stating it has been deleted. Future add on: notification that a gift you claimed has been deleted. 
+
