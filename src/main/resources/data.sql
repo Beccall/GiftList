@@ -37,7 +37,7 @@ MERGE INTO person (id, name) VALUES
     (34, 'Barry'),
     (35, 'Nyomie'),
     (36, 'Brooks'),
-    (37, 'Jarek');
+    (37, 'Jaryk');
 
 
 MERGE INTO family (id, family_name) VALUES
