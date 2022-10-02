@@ -1,13 +1,18 @@
 package xyz.levell.christmaslist.Entity;
 
 
-import xyz.levell.christmaslist.Entity.Gift;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 
 @Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person {
 
     @Id
@@ -17,23 +22,6 @@ public class Person {
 
     @OneToMany(mappedBy = "person")
     private List<Gift> gifts;
-
-    public Person() {}
-
-    public Person(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-                "Person[id=%d, name='%s', gifts='%s']",
-                id, name, gifts);
-    }
-
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public List<Gift> getGifts() { return gifts; }
 }
 
 

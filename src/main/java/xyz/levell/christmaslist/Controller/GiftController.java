@@ -1,18 +1,14 @@
 package xyz.levell.christmaslist.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import xyz.levell.christmaslist.Entity.*;
+import xyz.levell.christmaslist.Service.AuthenticationService;
 import xyz.levell.christmaslist.Service.GiftService;
 import xyz.levell.christmaslist.Service.PersonService;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * In Terminal run 'ifconfig'.
@@ -22,16 +18,12 @@ import java.util.List;
  * Go to 192.168.1.XX:8080 in browser.
  */
 @Controller
+@RequiredArgsConstructor
 public class GiftController {
 
-    private GiftService giftService;
-    private PersonService personService;
-
-    @Autowired
-    public GiftController(GiftService giftService, PersonService personService) {
-        this.giftService = giftService;
-        this.personService = personService;
-    }
+    private final GiftService giftService;
+    private final PersonService personService;
+    private final AuthenticationService authenticationService;
 
     @GetMapping("/login")
     public String login() {
@@ -40,82 +32,60 @@ public class GiftController {
 
     @GetMapping("/")
     public String hello(Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
+        personService.generatePersonModel(model);
         return "index";
     }
 
     @GetMapping("/myList/{personName}")
     public String addGift(@PathVariable String personName, Model model){
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-        model.addAttribute("gifts", giftService.getAllGiftsByPerson(personService.getPersonByName(personName)));
-        Gift gift = new Gift();
-        model.addAttribute("gift", gift);
+        personService.generatePersonModel(model);
+        giftService.generateMyGiftsModel(model, personName);
         return "myList";
 
     }
 
     @PostMapping("/myList/{personName}")
     public RedirectView processFormGift(@PathVariable String personName, Gift gift) {
-        Person person = personService.getPersonByName(personName);
-        giftService.addGift(gift.getGiftName(), gift.getGiftUrl(), gift.getGiftDescription(), person);
+        giftService.addGift(gift, personName);
         return new RedirectView("/myList/{personName}");
     }
 
     @GetMapping("/delGift/{giftId}/{personName}")
     public RedirectView delGift(@PathVariable Long giftId) {
-        giftService.delGift(giftId);
+        giftService.deleteGiftById(giftId);
         return new RedirectView("/myList/{personName}");
-
     }
 
     @GetMapping("/{personName}")
     public String allGifts(@PathVariable() String personName, Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-        Person personOwner = personService.getPersonByName(personName);
-        model.addAttribute("person", personName);
-        model.addAttribute("gifts", giftService.getAllGiftsByPerson(personOwner));
+        personService.generatePersonModel(model);
+        giftService.generateMyGiftsModel(model, personName);
         return "othersList";
     }
 
     @GetMapping("/claimGift/{personName}/{giftId}")
-    public RedirectView claimGift(@PathVariable long giftId, @PathVariable String personName) {
-        Gift gift = giftService.findGiftById(giftId);
-         if (gift.isClaimedBy(personService.getPersonByLoggedIn().getName()) == false) {
-            giftService.addGiftClaimed(giftService.findGiftById(giftId), personService.getPersonByLoggedIn(),
-                    personService.getPersonByName(personName));
-         }
+    public RedirectView claimGift(@PathVariable long giftId) {
+        giftService.addGiftClaimed(giftId);
         return new RedirectView("/{personName}");
     }
 
     @GetMapping("/editGift/{giftId}/{personName}")
-    public String editGift(@PathVariable long giftId, @PathVariable String personName,  Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-        model.addAttribute("giftToEdit", giftService.findGiftById(giftId));
-        model.addAttribute("personName", personName);
+    public String editGift(@PathVariable long giftId,  Model model) {
+        personService.generatePersonModel(model);
+        giftService.editGiftSetDetails(giftId, model);
         return "editGift";
     }
 
     @PostMapping("/editGift/{giftId}/{personName}")
-    public RedirectView editGift(@PathVariable String personName, @PathVariable long giftId, Gift gift) {
-        giftService.updateGift(giftId, gift, personService.getPersonByName(personName));
+    public RedirectView editGift(@PathVariable long giftId, Gift gift) {
+        giftService.updateGift(giftId, gift);
         return new RedirectView("/myList/{personName}" );
     }
 
     @GetMapping("/shoppingList")
     public String shoppingList(Model model) {
-        model.addAttribute("adminOwners", personService.getOwnersByAdminLoggedIn());
-        model.addAttribute("ownersInFamily", personService.getOwnersByFamily());
-        model.addAttribute("personLoggedIn", personService.getPersonByLoggedIn());
-
-        model.addAttribute("claimed", giftService.findClaimedByPersonClaimer(personService.getPersonByLoggedIn()));
+        personService.generatePersonModel(model);
+        giftService.setClaimedGifts(model);
         return "shoppingList";
     }
 
@@ -123,7 +93,6 @@ public class GiftController {
     public RedirectView removeClaim(@PathVariable long claimId) {
         giftService.delClaimed(claimId);
         return new RedirectView("/shoppingList" );
-
     }
 }
 

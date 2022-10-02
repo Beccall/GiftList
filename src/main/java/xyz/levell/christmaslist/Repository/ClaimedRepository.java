@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ClaimedRepository extends JpaRepository<Claimed, Long> {
-    ClaimedRepository findById(long id);
     List<Claimed> findByPersonClaimer(Person personClaimer);
-    List<Claimed> findByGift(Gift gift);
-    List<Claimed> findByPersonOwner(Person personOwner);
+    Claimed findByPersonClaimerAndGift(Person personClaimer, Gift gift);
 }

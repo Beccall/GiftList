@@ -1,11 +1,15 @@
 package xyz.levell.christmaslist.Entity;
 
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Claimed {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,25 +23,4 @@ public class Claimed {
 
     @ManyToOne
     private Person personOwner;
-
-    public Claimed(){}
-
-    public Claimed(Gift gift, Person personClaimer, Person personOwner){
-        this.gift = gift;
-        this.personClaimer = personClaimer;
-        this.personOwner = personOwner;
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-                "Family[id=%d, gift='%s', personClaimer='%s', personOwner='%s']",
-                id, gift, personClaimer, personOwner);
-    }
-
-    public Long getId() { return id; }
-    public Person getPersonClaimer() { return personClaimer; }
-    public Gift getGift() { return gift; }
-    public Person getPersonOwner() { return personOwner; }
-
 }

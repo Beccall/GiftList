@@ -1,8 +1,15 @@
 package xyz.levell.christmaslist.Entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class FamilyPerson {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,22 +20,4 @@ public class FamilyPerson {
 
     @ManyToOne
     private Family family;
-
-    protected FamilyPerson(){}
-
-    public FamilyPerson(Person person, Family family){
-        this.person = person;
-        this.family = family;
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-                "Family[id=%d, person='%s', family='%s']",
-                id, person, family);
-    }
-
-    public Long getId() { return id; }
-    public Person getPerson() { return person; }
-    public Family getFamily() { return family; }
 }
