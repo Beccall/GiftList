@@ -12,4 +12,5 @@ import java.util.List;
 public interface ClaimedRepository extends JpaRepository<Claimed, Long> {
     List<Claimed> findByPersonClaimer(Person personClaimer);
     Claimed findByPersonClaimerAndGift(Person personClaimer, Gift gift);
+    List<Claimed> findAllByGift(Gift gift);
 }

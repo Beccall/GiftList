@@ -36,7 +36,11 @@ public class GiftService {
         log.info("Successfully created record for '{}'", gift.getGiftName());
     }
 
-    public void deleteGiftById(Long id) {
+    public void deleteGiftById(long id) {
+        Gift gift = giftRepository.findById(id);
+        claimedRepository.findAllByGift(gift).stream()
+                .forEach(claimed -> claimedRepository.deleteById(claimed.getId()));
+
         giftRepository.deleteById(id);
         log.info("Successfully deleted Gift record with id {}", id);
     }
@@ -95,19 +99,6 @@ public class GiftService {
 
     public void delClaimed(Long id) {
         claimedRepository.deleteById(id);
-    }
-
-    public void generateMyGiftsModel(Model model, String personName) {
-        String userName = authenticationService.getUserName();
-
-        model.addAttribute("gifts", getAllGiftsByPerson(userName));
-        model.addAttribute("gift", new Gift());
-        model.addAttribute("person", userName);
-    }
-
-    public void editGiftSetDetails(Long giftId, Model model) {
-        model.addAttribute("giftToEdit", giftRepository.findById(giftId));
-        model.addAttribute("personName", authenticationService.getUserName());
     }
 
     private String validateUrl(String giftUrl) {

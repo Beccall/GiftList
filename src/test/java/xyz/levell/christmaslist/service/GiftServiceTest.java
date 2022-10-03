@@ -20,9 +20,7 @@ import xyz.levell.christmaslist.Repository.PersonRepository;
 import xyz.levell.christmaslist.Service.AuthenticationService;
 import xyz.levell.christmaslist.Service.GiftService;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -265,5 +263,32 @@ public class GiftServiceTest {
         giftService.setClaimedGifts(model);
         verify(model).addAttribute(eq("claimed"), listClaimedArgumentCaptor.capture());
         assertEquals(Collections.singletonList(claimed), listClaimedArgumentCaptor.getValue());
+    }
+
+    @Test
+    @DisplayName("should return all claimed and gift record")
+    void deleteGiftById() {
+        Claimed claimed = Claimed.builder()
+                .personClaimer(person)
+                .gift(gift)
+                .build();
+        Claimed claimed2 = Claimed.builder()
+                .personClaimer(Person.builder().name("Ryan").build())
+                .gift(gift)
+                .build();
+        when(giftRepository.findById(1L)).thenReturn(gift);
+        when(claimedRepository.findAllByGift(gift)).thenReturn(Arrays.asList(claimed, claimed2));
+        giftService.deleteGiftById(1L);
+        verify(claimedRepository, times(2)).deleteById(any());
+        verify(giftRepository).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("should return all claimed and gift record when claimed is empty")
+    void deleteGiftById_claimedNull() {
+        when(giftRepository.findById(1L)).thenReturn(gift);
+        when(claimedRepository.findAllByGift(gift)).thenReturn(Collections.emptyList());
+        giftService.deleteGiftById(1L);
+        verify(giftRepository).deleteById(1L);
     }
 }

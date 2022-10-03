@@ -27,52 +27,63 @@ public class GiftController {
 
     @GetMapping("/login")
     public String login() {
+        if (authenticationService.isAuthenticated()) {
+            return "redirect:/";
+        }
         return "login";
     }
 
     @GetMapping("/")
     public String hello(Model model) {
         personService.generatePersonModel(model);
+
         return "index";
     }
 
     @GetMapping("/myList/{personName}")
     public String addGift(@PathVariable String personName, Model model){
         personService.generatePersonModel(model);
-        giftService.generateMyGiftsModel(model, personName);
-        return "myList";
+        model.addAttribute("gifts", giftService.getAllGiftsByPerson(personName));
+        model.addAttribute("gift", new Gift());
 
+        return "myList";
     }
 
     @PostMapping("/myList/{personName}")
     public RedirectView processFormGift(@PathVariable String personName, Gift gift) {
         giftService.addGift(gift, personName);
+
         return new RedirectView("/myList/{personName}");
     }
 
     @GetMapping("/delGift/{giftId}/{personName}")
     public RedirectView delGift(@PathVariable Long giftId) {
         giftService.deleteGiftById(giftId);
+
         return new RedirectView("/myList/{personName}");
     }
 
     @GetMapping("/{personName}")
     public String allGifts(@PathVariable() String personName, Model model) {
         personService.generatePersonModel(model);
-        giftService.generateMyGiftsModel(model, personName);
+        model.addAttribute("person", personName);
+        model.addAttribute("gifts", giftService.getAllGiftsByPerson(personName));
+
         return "othersList";
     }
 
     @GetMapping("/claimGift/{personName}/{giftId}")
     public RedirectView claimGift(@PathVariable long giftId) {
         giftService.addGiftClaimed(giftId);
+
         return new RedirectView("/{personName}");
     }
 
     @GetMapping("/editGift/{giftId}/{personName}")
-    public String editGift(@PathVariable long giftId,  Model model) {
+    public String editGift(@PathVariable long giftId, @PathVariable String personName, Model model) {
         personService.generatePersonModel(model);
-        giftService.editGiftSetDetails(giftId, model);
+        model.addAttribute("giftToEdit", giftService.findGiftById(giftId));
+        model.addAttribute("personName", personName);
         return "editGift";
     }
 
@@ -86,12 +97,14 @@ public class GiftController {
     public String shoppingList(Model model) {
         personService.generatePersonModel(model);
         giftService.setClaimedGifts(model);
+
         return "shoppingList";
     }
 
     @GetMapping("/remove/{claimId}")
     public RedirectView removeClaim(@PathVariable long claimId) {
         giftService.delClaimed(claimId);
+
         return new RedirectView("/shoppingList" );
     }
 }
